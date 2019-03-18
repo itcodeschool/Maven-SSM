@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
+	<!-- Spring的扫描 Dao .... -->
+	<context:component-scan
+		base-package="com.itcodeschool.ssm.mapper" />
+
+	<!-- 读取Property的类 <context:property-placeholder location=""/> -->
+	<bean
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<!-- 指定property的路径 -->
+		<property name="locations">
+			<list>
+				<value>classpath:jdbc.properties</value>
+			</list>
+		</property>
+	</bean>
+
+	<!-- DriverManagerDataSource 配置数据源 -->
+	<bean id="dataSource"
+		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName" value="${driverClass}" />
+		<property name="url" value="${jdbcUrl}" />
+		<property name="username" value="${username}" />
+		<property name="password" value="${password}" />
+	</bean>
+
+	<!-- Mybatis的SqlSessionFactory工厂 Spring + Mybatis -->
+	<bean class="org.mybatis.spring.SqlSessionFactoryBean">
+		<!-- 配置数据源 -->
+		<property name="dataSource" ref="dataSource" />
+		<!-- Mybatis核心配置文件的位置 mybatis-config -->
+		<property name="configLocation"
+			value="classpath:mybatis-config.xml" />
+		<!-- <property name="mapperLocations" value="classpath:com/itcodeschool/ssm/mapper/*.xml"></property> -->
+	</bean>
+
+	<!-- 配置Mybatis扫描 -->
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<!-- 指定基本包 Mybatis的 Dao接口与Mapper的位置 （指定包） -->
+		<property name="basePackage" value="com.itcodeschool.ssm.mapper" />
+	</bean>
+	
+
+</beans>

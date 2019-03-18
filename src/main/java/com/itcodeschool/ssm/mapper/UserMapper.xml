@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+<!-- 
+namespace:指定要绑定的包类路径
+ -->
+<mapper namespace="com.itcodeschool.ssm.mapper.UserMapper">
+  <!-- 
+    id：和方法名一致
+   -->
+ <select id="findUser" parameterType="int" resultType="User">
+     select id,name,sex,age,address from user where id = #{id}
+ </select>
+ 
+  <select id="findUserList"  resultType="User">
+     select id,name,sex,age,address from user 
+ </select>
+ 
+ <delete id="deleteUser" parameterType="int" >
+   delete from user where id = #{id}
+ </delete>
+
+ <update id="updateUser" parameterType="User">
+    update user set name = #{name}, sex = #{sex}, age = #{age} ,address = #{address}
+    where id = #{id}
+ </update>
+
+ <insert id="addUser" parameterType="User">
+    insert into User(name,sex,age,address)  values(#{name},#{sex},#{age},#{address})
+ </insert>
+</mapper>
